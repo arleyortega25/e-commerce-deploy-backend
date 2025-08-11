@@ -9,24 +9,27 @@ import { PaymentModule } from './payment/payment.module';
 import { PurchaseModule } from './purchase/purchase.module';
 import { PurchaseProductModule } from './purchase-product/purchase-product.module';
 
-
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal:true}),
-      TypeOrmModule.forRoot({
-        type: 'postgres',
-        host: process.env.DB_HOST,
-        port: Number(process.env.DB_PORT),
-        username: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
-        entities: [join(__dirname, "**", "*.entity.js")]
-,
-        synchronize: true,
-      }),
-      ProductsModule,
-      PaymentModule,
-      PurchaseModule,
-      PurchaseProductModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+      entities: [join(__dirname, '**', '*.entity.js')],
+      synchronize: true,
+    }),
+    ProductsModule,
+    PaymentModule,
+    PurchaseModule,
+    PurchaseProductModule,
+  ],
   controllers: [ProductsController],
   providers: [ProductsService],
 })
